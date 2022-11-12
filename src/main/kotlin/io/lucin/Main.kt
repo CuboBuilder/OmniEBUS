@@ -11,7 +11,7 @@ import mindustry.net.Packets.ConnectPacket
 
 fun main() {
     init()
-    Entity.EntityBuilder(false, packet(), "darkdustry.tk", 2000, 2000)
+    Entity.EntityBuilder(false, packet(), "darkdustry.tk", 6567, 6567)
     while (true) {
     }
 }
@@ -25,7 +25,7 @@ private fun init() {
 
     Vars.state = GameState()
 
-    Version.build = 139
+    Version.build = 140
 }
 
 private fun packet(): ConnectPacket {
@@ -34,8 +34,8 @@ private fun packet(): ConnectPacket {
     packet.version = -1
     packet.versionType = "official"
 
-    packet.name = "uwu"
-    packet.color = 0
+    packet.name = Rand().nextExponential().toString()
+    packet.color = 1
     packet.locale = "ru"
 
     packet.mods = Seq()

@@ -1,19 +1,15 @@
 package io.lucin.core
 
 import arc.net.*
+import arc.struct.IntMap
 import arc.util.Log.*
 import arc.util.Threads
-import arc.util.io.Reads
-import mindustry.Vars.*
 import mindustry.gen.*
-import mindustry.io.SaveIO
-import mindustry.maps.Map
-import mindustry.net.*
 import mindustry.net.ArcNetProvider.PacketSerializer
+import mindustry.net.Packet
 import mindustry.net.Packets.*
-import java.io.DataInputStream
+import mindustry.net.Streamable.StreamBuilder
 import java.net.DatagramPacket
-import java.util.zip.InflaterInputStream
 
 object Entity {
     class EntityBuilder(
@@ -27,9 +23,7 @@ object Entity {
 
         init {
             client.setDiscoveryPacket { DatagramPacket(ByteArray(516), 516) }
-
             client.addListener(EntityListener(this))
-            client.addListener(ChatListener())
 
             try {
                 client.stop()
@@ -43,9 +37,6 @@ object Entity {
                 }
 
                 client.connect(5000, host, tcpPort, udpPort)
-                Net(ArcNetProvider()).handleClient(WorldStream::class.java) { data ->
-                    NetworkIO.loadWorld(InflaterInputStream(data.stream))
-                }
             } catch (e: Exception) {
                 err(e)
             }
@@ -65,7 +56,6 @@ object Entity {
                     info("Connecting to ${connect.addressTCP}")
 
                     val confirmCallPacket = ConnectConfirmCallPacket()
-                    confirmCallPacket.player = Player.create()
 
                     entityBuilder.client.sendTCP(entityBuilder.packet)
 
@@ -87,7 +77,7 @@ object Entity {
     private class ChatListener : NetListener {
         override fun received(connection: Connection?, packet: Any?) {
             when (packet) {
-                is SendMessageCallPacket -> {
+                is SendMessageCallPacket     -> {
                     try {
                         packet.handled()
                     } catch (e: Exception) {
@@ -97,7 +87,7 @@ object Entity {
                     info(packet.message)
                 }
 
-                is SendMessageCallPacket2 -> {
+                is SendMessageCallPacket2    -> {
                     try {
                         packet.handled()
                     } catch (e: Exception) {
@@ -120,49 +110,31 @@ object Entity {
         }
     }
 
-    private class DataListener : NetListener {
-        override fun received(connection: Connection?, packet: Any?) {
-            when (packet) {
-                is StreamBegin -> {
-                    packet.handled()
-                    info("Start of data reception. Type: ${packet.type}. Id: ${packet.id}. Total: ${packet.total}.")
+    private class DataListener(val entityBuilder: EntityBuilder) : NetListener {
+        private val streams: IntMap<StreamBuilder> = IntMap()
+
+        fun handleClientReceived(packet: Packet) {
+            packet.handled()
+
+            if (packet is StreamBegin) {
+                streams.put(packet.id, StreamBuilder(packet))
+            } else if (packet is StreamChunk) {
+                val builder = streams.get(packet.id)
+                if (builder == null) err("Received stream chunk without a StreamBegin beforehand!")
+
+                builder.add(packet.data)
+
+                if (builder.isDone) {
+                    streams.remove(builder.id)
+                    handleClientReceived(builder.build())
                 }
-
-                is StreamChunk -> {
-                    packet.handled()
-                    info("Receiving data. Id: ${packet.id}. Size: ${packet.data.size}.")
-                    SaveIO.getSaveWriter().readMap(DataInputStream(packet.data.inputStream()), world.context)
-                }
-
-                is WorldStream -> {
-                    try {
-                        packet.handled()
-                        info("Start of world data reception.")
-
-                        val inflaterInputStream = InflaterInputStream(packet.stream)
-                        val stream = DataInputStream(inflaterInputStream)
-                        state.map = Map(SaveIO.getSaveWriter().readStringMap(stream))
-
-                        val read = Reads(stream)
-
-                        Groups.clear()
-                        val id: Int = stream.readInt()
-                        player.reset()
-                        player.read(read)
-                        player.id = id
-                        player.add()
-
-                        SaveIO.getSaveWriter().readContentHeader(stream)
-                        SaveIO.getSaveWriter().readMap(stream, world.context)
-                        SaveIO.getSaveWriter().readTeamBlocks(stream)
-                        SaveIO.getSaveWriter().readCustomChunks(stream)
-                    } catch (e: Exception) {
-                        err(e)
-                    } finally {
-                        content.setTemporaryMapper(null)
-                    }
-                }
+            } else {
+                packet.handleClient()
             }
+        }
+
+        override fun received(connection: Connection?, packet: Any?) {
+            handleClientReceived(packet as Packet)
         }
     }
 }

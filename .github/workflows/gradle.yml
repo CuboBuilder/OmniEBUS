@@ -1,0 +1,17 @@
+name: Client startup
+
+jobs:
+  runJar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Подключение Java 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Настройка доступа к gradlew
+        run: chmod +x ./gradlew
+      - name: Сборка плагина в jar
+        run: ./gradlew jar
+      - name: Запуск Jar файла
+        run: java -jar Darkdustry-1.0.jar
