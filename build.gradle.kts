@@ -6,7 +6,7 @@ plugins {
 }
 
 application {
-    mainClass.set("io.lucin.Main")
+    mainClass.set("io.lucin.MainKt")
 }
 
 group = "io.lucin"
