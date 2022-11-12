@@ -16,4 +16,4 @@ jobs:
       - name: Сборка плагина в jar
         run: ./gradlew jar
       - name: Запуск Jar файла
-        run: java -jar Darkdustry-1.0.jar
+        run: java -jar build/libs/uwu.jar

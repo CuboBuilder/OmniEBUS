@@ -35,6 +35,7 @@ tasks.jar {
         attributes["Main-Class"] = application.mainClass
     }
 
+    archiveFileName.set("uwu.jar")
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
