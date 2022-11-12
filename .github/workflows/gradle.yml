@@ -1,5 +1,7 @@
 name: Client startup
 
+on: [ push ]
+
 jobs:
   runJar:
     runs-on: ubuntu-latest
