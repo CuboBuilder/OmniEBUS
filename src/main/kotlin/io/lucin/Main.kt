@@ -7,11 +7,20 @@ import io.lucin.core.Entity
 import mindustry.Vars
 import mindustry.core.*
 import mindustry.gen.Groups
+import mindustry.gen.SendChatMessageCallPacket
 import mindustry.net.Packets.ConnectPacket
+import java.lang.Thread.sleep
 
 fun main() {
     init()
-    Entity.EntityBuilder(false, packet(), "darkdustry.tk", 6567, 6567)
+    for (i in 0..29) {
+        val player = Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
+        sleep(500)
+        val packet = SendChatMessageCallPacket()
+        packet.message = "Hello! I very love easyplay.su!!!"
+        player.client.sendTCP(packet)
+        sleep(500)
+    }
     while (true) {
     }
 }
@@ -34,9 +43,9 @@ private fun packet(): ConnectPacket {
     packet.version = -1
     packet.versionType = "official"
 
-    packet.name = Rand().nextExponential().toString()
-    packet.color = 1
-    packet.locale = "ru"
+    packet.name = Rand().random(-99999, 99999).toString()
+    packet.color = 255
+    packet.locale = "huy"
 
     packet.mods = Seq()
     packet.mobile = false
