@@ -14,7 +14,7 @@ import java.lang.Thread.sleep
 fun main() {
     init()
     for (i in 0..29) {
-        val player = Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
+        val player = Entity.EntityBuilder(false, packet(), "darkdustry.tk", 6567, 6567)
         sleep(500)
         val packet = SendChatMessageCallPacket()
         packet.message = "Hello! I very love easyplay.su!!!"
@@ -45,7 +45,7 @@ private fun packet(): ConnectPacket {
 
     packet.name = Rand().random(-99999, 99999).toString()
     packet.color = 255
-    packet.locale = "huy"
+    packet.locale = "chlen darka"
 
     packet.mods = Seq()
     packet.mobile = false
