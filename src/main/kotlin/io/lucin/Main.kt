@@ -13,8 +13,8 @@ import java.lang.Thread.sleep
 
 fun main() {
     init()
-    for (i in 0..29) {
-        val player = Entity.EntityBuilder(false, packet(), "darkdustry.tk", 6567, 6567)
+    for (i in 0..2) {
+        val player = Entity.EntityBuilder(false, packet(), "darkdustry.tk", 10000, 10000)
         sleep(500)
         val packet = SendChatMessageCallPacket()
         packet.message = "Hello! I very love easyplay.su!!!"
