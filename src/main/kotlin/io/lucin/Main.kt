@@ -13,7 +13,7 @@ import java.lang.Thread.sleep
 
 fun main() {
     init()
-    while (True) {
+    while (true) {
         val player = Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
         sleep(500)
         val packet = SendChatMessageCallPacket()
