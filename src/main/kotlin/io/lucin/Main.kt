@@ -14,10 +14,10 @@ import java.lang.Thread.sleep
 fun main() {
     init()
     while (true) {
-        val player = Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
+        val player = Entity.EntityBuilder(false, packet(), "109.94.209.233", 6570, 6570)
         sleep(200)
         val packet = SendChatMessageCallPacket()
-        packet.message = "привет от тентакли ;)"
+        packet.message = "приветик!!!!"
         player.client.sendTCP(packet)
         sleep(200)
     }
@@ -43,7 +43,7 @@ private fun packet(): ConnectPacket {
     packet.version = -1
     packet.versionType = "official"
 
-    packet.name = "zloy - ${Rand().random(-99999, 99999).toString()}"
+    packet.name = "loli ${Rand().random(-99999, 99999).toString()} boobs"
     packet.color = 0
     packet.locale = "chlen mastera"
 
