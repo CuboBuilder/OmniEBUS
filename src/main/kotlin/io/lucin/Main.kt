@@ -60,7 +60,7 @@ private fun task(address: String) {
     val port = fullAddress[1].replace('"', ' ').replace(" ", "").toInt()
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
-        Thread.sleep(1000)
+        Thread.sleep(10000)
     }
 }
 
