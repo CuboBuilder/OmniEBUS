@@ -48,7 +48,7 @@ private fun packet(): ConnectPacket {
 
     packet.name = Rand().random(-99999, 99999).toString()
     packet.color = 255
-    packet.locale = "huy"
+    packet.locale = "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
 
     packet.mods = Seq()
     packet.mobile = false
@@ -66,6 +66,9 @@ private fun task(address: String) {
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
         Thread.sleep(500)
+    }
+    while (true) {
+
     }
 }
 
