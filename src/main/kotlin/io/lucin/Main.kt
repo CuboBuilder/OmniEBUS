@@ -22,7 +22,7 @@ fun main() {
     //     thread.start()
     // }
 
-    for (i in 0..4) {
+    for (i in 0..5) {
         val thread = Thread { task("easyplay.su:6567") }
         thread.start()
     }
@@ -65,7 +65,7 @@ private fun task(address: String) {
     val port = fullAddress[1].replace('"', ' ').replace(" ", "").toInt()
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
-        Thread.sleep(500)
+        Thread.sleep(150)
     }
     while (true) {
 
