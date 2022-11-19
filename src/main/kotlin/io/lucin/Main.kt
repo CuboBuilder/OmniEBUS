@@ -15,11 +15,11 @@ fun main() {
     init()
     while (true) {
         val player = Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
-        sleep(500)
+        sleep(200)
         val packet = SendChatMessageCallPacket()
         packet.message = "привет от тентакли ;)"
         player.client.sendTCP(packet)
-        sleep(500)
+        sleep(200)
     }
     while (true) {
     }
