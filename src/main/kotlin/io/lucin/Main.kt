@@ -43,12 +43,12 @@ private fun packet(): ConnectPacket {
     packet.version = -1
     packet.versionType = "official"
 
-    packet.name = Rand().random(-99999, 99999).toString()
-    packet.color = 255
-    packet.locale = "chlen darka"
+    packet.name = "zloy - ${Rand().random(-99999, 99999).toString()}"
+    packet.color = 0
+    packet.locale = "chlen mastera"
 
     packet.mods = Seq()
-    packet.mobile = false
+    packet.mobile = true
 
     packet.uuid = uuid()
     packet.usid = usid()
