@@ -56,8 +56,8 @@ private fun packet(): ConnectPacket {
 
 private fun task(address: String) {
     val fullAddress = address.split(':')
-    val ip = fullAddress[0].replace('"', ' ')
-    val port = fullAddress[1].replace('"', ' ').toInt()
+    val ip = fullAddress[0].replace('"', ' ').replace(" ", "")
+    val port = fullAddress[1].replace('"', ' ').replace(" ", "").toInt()
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
         Thread.sleep(1000)
