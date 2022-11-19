@@ -17,15 +17,15 @@ import mindustry.net.Packets.ConnectPacket
 fun main() {
     init()
     val targets = listOfServes()
-    // targets.forEach { target ->
-    //     val thread = Thread { task(target) }
-    //     thread.start()
-    // }
-
-    for (i in 0..5) {
-        val thread = Thread { task("easyplay.su:6567") }
+    targets.forEach { target ->
+        val thread = Thread { task(target) }
         thread.start()
     }
+
+    //for (i in 0..5) {
+    //    val thread = Thread { task("easyplay.su:6567") }
+    //    thread.start()
+    //}
 }
 
 private fun init() {
@@ -80,7 +80,7 @@ private fun listOfServes(): List<String> {
             if (res.status == Http.HttpStatus.OK) {
                 val json = Jval.read(res.resultAsString)
                 json.asArray().forEach { server ->
-                    if (server.getString("name").lowercase() == "eradicationdustry") {
+                    if (server.getString("name").lowercase() == "omnidustry") {
                         val addresses = server.get("address")
                             .toString()
                             .replace('[', ' ')
