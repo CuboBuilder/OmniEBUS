@@ -18,11 +18,7 @@ repositories {
 }
 
 dependencies {
-    val jline = "3.21.0"
-    implementation("org.jline:jline-reader:$jline")
-    implementation("org.jline:jline-terminal-jna:$jline")
-
-    val mindustryVersion = "v140.3"
+    val mindustryVersion = "v140.4"
     implementation("com.github.Anuken.Arc:arcnet:$mindustryVersion")
     implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")

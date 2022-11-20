@@ -61,7 +61,7 @@ object Entity {
 
                     if (!entityBuilder.hidden) {
                         entityBuilder.client.sendTCP(confirmCallPacket)
-                        info("Confirmed")
+                        info("Confirmed.")
                     }
                 }
             }
@@ -77,7 +77,7 @@ object Entity {
     private class ChatListener : NetListener {
         override fun received(connection: Connection?, packet: Any?) {
             when (packet) {
-                is SendMessageCallPacket     -> {
+                is SendMessageCallPacket -> {
                     try {
                         packet.handled()
                     } catch (e: Exception) {
@@ -120,7 +120,7 @@ object Entity {
                 streams.put(packet.id, StreamBuilder(packet))
             } else if (packet is StreamChunk) {
                 val builder = streams.get(packet.id)
-                if (builder == null) err("Received stream chunk without a StreamBegin beforehand!")
+                if (builder == null) err("Received StreamChunk without a StreamBegin beforehand!")
 
                 builder.add(packet.data)
 

