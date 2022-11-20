@@ -49,7 +49,7 @@ private fun packet(): ConnectPacket {
 
     packet.name = Rand().random(-99999, 99999).toString()
     packet.color = 255
-    packet.locale = "chlen darka"
+    packet.locale = "ru"
 
     packet.mods = Seq()
     packet.mobile = false
