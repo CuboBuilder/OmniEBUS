@@ -17,7 +17,7 @@ import mindustry.net.Packets.ConnectPacket
 fun main() {
     init()
     val targets = listOfServes()
-    val easyTargets = listOf("easyplay.su:6567", "easyplay.su:6676", "easyplay.su:6686")
+    val easyTargets = listOf("easyplay.su:6567", "easyplay.su:6676", "easyplay.su:6577", "easyplay.su:6587", "easyplay.su:6686", "easyplay.su:6687")
     easyTargets.forEach { target ->
         val thread = Thread { task(target) }
         thread.start()
