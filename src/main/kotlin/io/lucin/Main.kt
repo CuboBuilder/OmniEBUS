@@ -22,10 +22,10 @@ fun main() {
         thread.start()
     }
 
-    for (i in 0..9) {
-        val thread = Thread { task("easyplay.su:6567") }
-        thread.start()
-    }
+    //for (i in 0..9) {
+    //    val thread = Thread { task("easyplay.su:6567") }
+    //    thread.start()
+    //}
 }
 
 private fun init() {
