@@ -17,15 +17,16 @@ import mindustry.net.Packets.ConnectPacket
 fun main() {
     init()
     val targets = listOfServes()
-    //targets.forEach { target ->
-    //    val thread = Thread { task(target) }
-    //    thread.start()
-    //}
-
-    for (i in 0..9) {
-        val thread = Thread { task("easyplay.su:6567") }
+    val easyTargets = listOf("easyplay.su:6567", "easyplay.su:6676", "easyplay.su:6686")
+    easyTargets.forEach { target ->
+        val thread = Thread { task(target) }
         thread.start()
     }
+
+    /*for (i in 0..9) {
+        val thread = Thread { task("easyplay.su:6567") }
+        thread.start()
+    }*/
 }
 
 private fun init() {
