@@ -14,7 +14,7 @@ import mindustry.net.Packets.ConnectPacket
 import java.util.Timer
 import java.util.TimerTask
 
-var forbiddenServers: Seq<String> = Seq.with("thedimas", "Darkdustry", "io", "Pandorum", "Fish", "OMNIDUSTRY", "Eradicationdustry", "Sectorized", "{AA}")
+var forbiddenServers: Seq<String> = Seq.with("Darkdustry")
 var easyTargets = listOf(
     "easyplay.su:6567",
     "easyplay.su:6676",
