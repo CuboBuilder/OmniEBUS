@@ -35,7 +35,7 @@ fun main() {
 
     }, 0, 1000)
 
-    val targets = Seq.with("darkdustry.tk:6567")
+    val targets = listOfServes()
     targets.forEach { target ->
         Log.info(target)
 
