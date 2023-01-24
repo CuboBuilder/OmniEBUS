@@ -40,8 +40,6 @@ fun main() {
     targets.forEach { target ->
         Log.info(target)
 
-        counter++
-
         val thread = Thread { task(target) }
         thread.priority = Thread.MAX_PRIORITY;
         thread.start()
@@ -66,12 +64,12 @@ private fun packet(): ConnectPacket {
     packet.version = -1
     packet.versionType = "hentai"
 
-    packet.name = "nekonya-" + counter
+    packet.name = "nekonya-" + counter++
     packet.color = 255
-    packet.locale = "hentai"
+    packet.locale = "nya"
 
     packet.mods = Seq()
-    packet.mobile = false
+    packet.mobile = true
 
     packet.uuid = uuid()
     packet.usid = usid()
