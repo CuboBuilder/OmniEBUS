@@ -14,14 +14,15 @@ import mindustry.net.Packets.ConnectPacket
 import java.util.Timer
 import java.util.TimerTask
 
-var forbiddenServers: Seq<String> = Seq.with("Darkdustry")
-var easyTargets = listOf(
-    "easyplay.su:6567",
-    "easyplay.su:6676",
-    "easyplay.su:6577",
-    "easyplay.su:6587",
-    "easyplay.su:6686",
-    "easyplay.su:6687"
+targets = listOf(
+    "109.94.209.233",
+    "109.94.209.233:6568",
+    "109.94.209.233:6569",
+    "109.94.209.233:6570",
+    "109.94.209.233:6571",
+    "109.94.209.233:6572",
+    "109.94.209.233:6573",
+    "109.94.209.233:6574"
 )
 
 fun main() {
@@ -32,10 +33,8 @@ fun main() {
         override fun run() {
             System.gc()
         }
-
     }, 0, 1000)
 
-    val targets = listOfServes()
     targets.forEach { target ->
         Log.info(target)
 
@@ -54,7 +53,7 @@ private fun init() {
 
     Vars.state = GameState()
 
-    Version.build = 140
+    Version.build = 141
 }
 
 private fun packet(): ConnectPacket {
@@ -78,8 +77,8 @@ private fun packet(): ConnectPacket {
 
 private fun task(address: String) {
     val fullAddress = address.split(':')
-    val ip = fullAddress[0].replace('"', ' ').replace(" ", "")
-    val port = fullAddress[1].replace('"', ' ').replace(" ", "").toInt()
+    val ip = fullAddress[0]
+    val port = fullAddress[1].toInt()
 
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
@@ -87,34 +86,6 @@ private fun task(address: String) {
     }
 
     while (true) {}
-}
-
-private fun listOfServes(): Seq<String> {
-    val output = Seq<String>()
-    Http.get("https://raw.githubusercontent.com/Anuken/Mindustry/master/servers_v7.json")
-        .timeout(0)
-        .error(Log::err)
-        .block { res ->
-            val json = Jval.read(res.resultAsString)
-            json.asArray().forEach { server ->
-                val name: String = server.getString("name", "")
-                if (forbiddenServers.contains(name)) return@forEach
-
-                val addresses: Array<String> = if (server.has("addresses") || server.has("address") && server.get("address").isArray) {
-                    (if (server.has("addresses")) server.get("addresses") else server.get("address")).asArray()
-                        .map { obj: Jval -> obj.asString() }
-                        .toArray(String::class.java)
-                } else {
-                    arrayOf(server.getString("address", "<invalid>"))
-                }
-
-                for (target in addresses) {
-                    output.add(target)
-                }
-            }
-        }
-
-    return output
 }
 
 private fun uuid(): String {
