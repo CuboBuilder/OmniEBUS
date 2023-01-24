@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    val mindustryVersion = "v140.4"
+    val mindustryVersion = "v141.2"
     implementation("com.github.Anuken.Arc:arcnet:$mindustryVersion")
     implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
