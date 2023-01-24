@@ -84,7 +84,7 @@ private fun task(address: String) {
 
     while (true) {
         Entity.EntityBuilder(false, packet(), ip, port, port)
-        Thread.sleep(100)
+        Thread.sleep(1)
     }
 
     while (true) {}
