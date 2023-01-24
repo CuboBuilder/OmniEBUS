@@ -14,7 +14,7 @@ import mindustry.net.Packets.ConnectPacket
 import java.util.Timer
 import java.util.TimerTask
 
-targets = listOf(
+var targets = listOf(
     "109.94.209.233",
     "109.94.209.233:6568",
     "109.94.209.233:6569",
