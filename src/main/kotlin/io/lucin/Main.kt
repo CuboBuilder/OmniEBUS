@@ -15,7 +15,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 var targets = listOf(
-    "109.94.209.233:6570"
+    "109.94.209.233:6570" // sandbox
 )
 
 var counter = 0
@@ -48,22 +48,22 @@ private fun init() {
 
     Vars.state = GameState()
 
-    Version.build = 141
-    // Version.build = 146
+    Version.build = 146
+    // Version.build = 141
 }
 
 private fun packet(): ConnectPacket {
     val packet = ConnectPacket()
 
     packet.version = -1
-    packet.versionType = "hentai"
+    packet.versionType = "amogus"
 
-    packet.name = "nekonya-" + counter++
-    packet.color = 255
-    packet.locale = "nya"
+    packet.name = "amogus-" + counter++
+    packet.color = 228
+    packet.locale = "sus"
 
     packet.mods = Seq()
-    packet.mobile = true
+    packet.mobile = false
 
     packet.uuid = uuid()
     packet.usid = usid()
