@@ -48,7 +48,8 @@ private fun init() {
 
     Vars.state = GameState()
 
-    Version.build = 146
+    Version.build = 141
+    // Version.build = 146
 }
 
 private fun packet(): ConnectPacket {
