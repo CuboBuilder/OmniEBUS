@@ -15,7 +15,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 var targets = listOf(
-    "109.94.209.233:6570" // sandbox
+    "109.94.209.233:6576" // sandbox v8
 )
 
 var counter = 0
@@ -48,7 +48,7 @@ private fun init() {
 
     Vars.state = GameState()
 
-    Version.build = 146
+    Version.build = 150.1
     // Version.build = 141
 }
 
