@@ -15,7 +15,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 var targets = listOf(
-    "5.228.122.149:6567"
+    "109.94.209.233:6570"
 )
 
 var counter = 0
@@ -48,7 +48,7 @@ private fun init() {
 
     Vars.state = GameState()
 
-    Version.build = 141
+    Version.build = 146
 }
 
 private fun packet(): ConnectPacket {
