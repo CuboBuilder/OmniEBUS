@@ -19,11 +19,9 @@ repositories {
 
 dependencies {
     val mindustryVersion = "v146"
-    implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
-
+    implementation("com.github.Anuken.Mindustry:arc-core:$mindustryVersion")
     testImplementation(kotlin("test"))
 }
-
 
 tasks.jar {
     manifest {
