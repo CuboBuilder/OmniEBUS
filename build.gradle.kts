@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    val mindustryVersion = "v146"
+    val mindustryVersion = "v150.1"
     implementation("com.github.Anuken.Mindustry:arc-core:$mindustryVersion")
     testImplementation(kotlin("test"))
 }
