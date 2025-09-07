@@ -18,6 +18,6 @@ jobs:
       - name: Настройка доступа к gradlew
         run: chmod +x ./gradlew
       - name: Сборка плагина в jar
-        run: ./gradlew jar
+        run: ./gradlew clean jar
       - name: Запуск Jar файла
-        run: java -jar build/libs/uwu.jar
+        run: java -jar build/libs/uwu.jar --target 109.94.209.233:6570 --rps 5
