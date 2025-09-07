@@ -15,6 +15,7 @@ application {
 
 repositories {
     mavenCentral()
+    // Only use Zelaux’s repo (no JitPack, avoids commit hashes)
     maven {
         url = uri("https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository")
     }
@@ -23,8 +24,10 @@ repositories {
 dependencies {
     val mindustryVersion = "v146"
 
+    // Mindustry Core
     implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
 
+    // Arc + required submodules
     implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     implementation("com.github.Anuken.Arc:flabel:$mindustryVersion")
     implementation("com.github.Anuken.Arc:freetype:$mindustryVersion")
