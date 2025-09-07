@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.jvm.tasks.Jar
 
 plugins {
     kotlin("jvm") version "1.7.10"
     application
-    java
 }
 
 group = "io.lucin"
@@ -15,57 +15,52 @@ application {
 
 repositories {
     mavenCentral()
-    maven(url = "https://jitpack.io")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-val mindustryVersion = "v150.1"
-val jabelVersion = "93fde537c7"
-
-dependencies {
-    implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
-    implementation("com.github.Anuken.Arc:arcnet:$mindustryVersion")
-    implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
-
-    annotationProcessor("com.github.Anuken:jabel:$jabelVersion")
-
-    testImplementation(kotlin("test"))
-}
-
-// force arc version to match Mindustry
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (requested.group == "com.github.Anuken.Arc") {
-            useVersion(mindustryVersion)
-        }
+    // Only use Zelaux’s repo (no JitPack, avoids commit hashes)
+    maven {
+        url = uri("https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository")
     }
 }
 
-// Java 8 backwards compatibility
+dependencies {
+    val mindustryVersion = "v146"
+
+    // Mindustry Core
+    implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
+
+    // Arc + required submodules
+    implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
+    implementation("com.github.Anuken.Arc:flabel:$mindustryVersion")
+    implementation("com.github.Anuken.Arc:freetype:$mindustryVersion")
+    implementation("com.github.Anuken.Arc:g3d:$mindustryVersion")
+    implementation("com.github.Anuken.Arc:fx:$mindustryVersion")
+    implementation("com.github.Anuken.Arc:arcnet:$mindustryVersion")
+}
+
+tasks.named<Jar>("jar") {
+    manifest {
+        attributes["Main-Class"] = application.mainClass.get()
+    }
+
+    archiveFileName.set("uwu.jar")
+
+    // Fat jar with dependencies
+    from({
+        configurations.runtimeClasspath.get()
+            .filter { it.name.endsWith("jar") }
+            .map { zipTree(it) }
+    })
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
 tasks.withType<JavaCompile> {
-    options.compilerArgs.addAll(listOf("--release", "8"))
     options.encoding = "UTF-8"
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-// build fat jar
-tasks.jar {
-    archiveFileName.set("uwu.jar")
-
-    from({
-        configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }
-    })
-
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-    manifest {
-        attributes["Main-Class"] = application.mainClass.get()
-    }
 }

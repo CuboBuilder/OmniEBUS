@@ -41,6 +41,14 @@ object Entity {
                 err(e)
             }
         }
+
+        fun stop() {
+            try {
+                client.stop()
+            } catch (e: Exception) {
+                err(e)
+            }
+        }
     }
 
     private class EntityListener(val entityBuilder: EntityBuilder) : NetListener {
